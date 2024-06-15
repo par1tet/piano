@@ -27,6 +27,6 @@
 }
 
 .keys > .white.click{
-    transition: background-color 1s linear;
+    transition: background-color 0.1s linear;
     background-color: red;
 }
