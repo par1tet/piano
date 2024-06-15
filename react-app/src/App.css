@@ -1,0 +1,32 @@
+.keys {
+    position: absolute;
+    display: grid;
+
+    top: 20%;
+    left: 48%;
+    transform: translate(-50%,-50%);
+
+    grid-template-columns: repeat(52, 25px);
+    border: 0.1px solid black;
+    height: 200px;
+}
+
+.keys > .white {
+    border: 0.1px solid black;
+    width: auto;
+    padding: 0px;
+    margin: 0px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.keys > .white:hover {
+    background-color: rgb(139, 139, 139);
+}
+
+.keys > .white.click{
+    transition: background-color 1s linear;
+    background-color: red;
+}
