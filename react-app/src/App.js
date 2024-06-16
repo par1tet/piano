@@ -68,7 +68,7 @@ function App() {
 			audioContext.close()
 		},250)
 
-		oscillator.type = "square";
+		oscillator.type = "sine";
 		oscillator.frequency.value = notes[index][1];
 		oscillator.connect(audioContext.destination);
 		oscillator.start();
