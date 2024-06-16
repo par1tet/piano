@@ -1,34 +1,81 @@
 .keys {
     position: absolute;
-    display: grid;
+    display: flex;
 
     top: 20%;
     left: 48%;
     transform: translate(-50%,-50%);
 
-    grid-template-columns: repeat(52, 25px);
-    border: 0.1px solid black;
-    height: 200px;
 }
 
-.keys > .white {
-    border: 0.1px solid black;
+.white-keys {
+    display: grid;
+
+    grid-template-columns: repeat(49, 25px);
+    border: 1px solid black;
+    height: 12.5rem;
+}
+
+.white-keys > .white {
+    border: 1px solid black;
     width: auto;
-    padding: 0px;
-    margin: 0px;
+    padding: 0rem;
+    margin: 0rem;
 
     font-weight: bold;
 
     cursor: pointer;
 }
 
-.keys > .white:hover {
+.white-keys > .white:hover {
     background-color: rgb(139, 139, 139);
 }
 
-.keys > .white.click{
+.white-keys > .white.click{
     transition: background-color 0.1s linear;
     background-color: red;
+}
+
+.black-keys {
+    position: flex;
+    position: absolute;
+
+    flex-direction: column;
+
+    padding-left: 12px;
+
+    height: 5rem;
+}
+
+.black-keys > .black {
+    border: 0px solid rgb(255, 255, 255);
+    background-color: black;
+    color: rgb(255, 255, 255);
+    width: 19px;
+    height: 90px;
+    padding: 0rem;
+    margin: 0px 3.445px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.black-keys > .black.hide {
+    margin: 0px calc(9.5px + 2.008px);
+    border: 0px;
+    width: 0px;
+    height: 0px;
+    font-size: 0px;
+}
+
+.black-keys > .black:hover {
+    background-color: rgb(55, 55, 55);
+}
+
+.black-keys > .black.click{
+    transition: background-color 0.1s linear;
+    background-color: rgb(2, 157, 2);
 }
 
 .sentezator > .set-steps{
@@ -39,11 +86,11 @@
 
     transform: translate(-50%,-50%);
 
-    width: 1300px;
+    width: 81.25rem;
 }
 
 .sentezator > .set-steps > input{
-    width: 1000px;
+    width: 6.25rem;
 }
 
 .key {

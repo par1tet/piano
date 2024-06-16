@@ -5,7 +5,7 @@ function App() {
 	let playesNotes = []
 	const [stepsInWave, setStepsInWave] = useState(5758)
 
-	let notes = [
+	let whiteKeysNote = [
 		['A0',27.5, '1'],
 		['B0',30.868, '2'],
 		['C1',32.703, '3'],
@@ -55,9 +55,57 @@ function App() {
 		['E7',2637, 'F4'],
 		['F7',2793.8, 'F8'],
 		['G7',3136, 'nt'],
-		['A7',3520, 'nt'],
-		['B7',3951.1, 'nt'],
-		['C8',4186, 'nt']
+	]
+
+	let blackKeysNote = [
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', 'hide'],
+		['C1',32.703, '3', ''],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', 'hide'],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', ''],
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', 'hide'],
+		['C1',32.703, '3', ''],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['G1',48.999, '7', 'hide'],
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', ''],
+		['C1',32.703, '3', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', 'hide'],
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', ''],
+		['C1',32.703, '3', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', 'hide'],
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', ''],
+		['C1',32.703, '3', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', 'hide'],
+		['A0',27.5, '1', ''],
+		['A0',27.5, '1', ''],
+		['C1',32.703, '3', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', 'hide'],
+		['A0',27.5, '1', ''],
+		['A0',27.5, '1', ''],
+		['C1',32.703, '3', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['G1',48.999, '7', 'hide'],
 	]
 
 	function play(ev, index){
@@ -81,7 +129,7 @@ function App() {
 		},250)
 
 		oscillator.type = "sine";
-		oscillator.frequency.value = notes[index][1];
+		oscillator.frequency.value = whiteKeysNote[index][1];
 		oscillator.connect(audioContext.destination);
 
 		oscillator.type = "square";
@@ -114,16 +162,21 @@ function App() {
 	function playButtonHoba(index){
 		for (let i = 0;i < playesNotes.length;i++){
 			try{
+				// if (playesNotes[i].index === index){
+				// 	playesNotes[i].osci.stop()
+				// 	playesNotes[i].audi.close()
+				// 	playesNotes = playesNotes.filter(n => n !== playesNotes[i])
+				// }
 				if (playesNotes[i].index === index){
-					playesNotes[i].osci.stop()
-					playesNotes[i].audi.close()
-					playesNotes = playesNotes.filter(n => n !== playesNotes[i])
+					return 0;
 				}
 			}
 			catch{
 				break;
 			}
 		}
+
+		let keys = [...whiteKeysNote, ...blackKeysNote]
 
 		let audioContext = new AudioContext();
 		let output = audioContext.createGain()
@@ -135,12 +188,10 @@ function App() {
 		pan.pan.value = 0;
 	
 		output.connect(volume);
-		volume.connect(pan);
-		pan.connect(audioContext.destination);
+		volume.connect(audioContext.destination);
 
 		let oscillator = audioContext.createOscillator();
 
-		oscillator.type = "square";
 		// oscillator.frequency.value = notes[index][1];f
 
 		let steps = +(document.querySelector('.sentezator > .set-steps > input').value);
@@ -156,18 +207,17 @@ function App() {
 
 		oscillator.setPeriodicWave(wave);
 
-		oscillator.frequency.setValueAtTime(notes[index][1], audioContext.currentTime);
+		oscillator.frequency.setValueAtTime(keys[index][1], audioContext.currentTime);
 		oscillator.connect(output);
 		oscillator.start();
 
 		function release(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.01
+				volume.gain.value -= 0.008
 				if (volume.gain.value < 0){
 					for (let i = 0;i < playesNotes.length;i++){
 						try{
-							if (playesNotes[i].whatkey === notes[index][2]){
-								playesNotes[i].osci.stop()
+							if (playesNotes[i].whatkey === keys[index][2]){
 								playesNotes[i].audi.close()
 								playesNotes = playesNotes.filter(n => n !== playesNotes[i])
 							}
@@ -176,9 +226,11 @@ function App() {
 							break
 						}
 					}
-					const elems = document.querySelectorAll('.keys > button')
+					let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
+					let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
+					let elems = [...whiteKeys,...blackKeys]
 					for (let i = 0;i < elems.length;i++){
-						if (elems[i].attributes.dataondownkey.value === notes[index][2]){
+						if (elems[i].attributes.dataondownkey.value === keys[index][2]){
 							elems[i].classList.remove('click');
 						}
 					}
@@ -190,21 +242,21 @@ function App() {
 		function sustein(){
 			setTimeout(() => {
 				release()
-			}, 300)
+			}, 200)
 		}
 
 		function decay(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.01
+				volume.gain.value -= 0.1
 				if (volume.gain.value < 0.74){
 					sustein()
 					clearInterval(interg)
 				}
-			},10)
+			},3)
 		}
 
 		const interd = setInterval(() => {
-			volume.gain.value += 0.14
+			volume.gain.value += 0.25
 			if (volume.gain.value > 1){
 				clearInterval(interd)
 				setTimeout(() => {
@@ -214,20 +266,28 @@ function App() {
 		},2)
 
 		playesNotes.push({
-			"osci":oscillator,
 			"audi":audioContext,
 			"index":index,
-			"whatkey":notes[index][2]
+			"whatkey":keys[index][2]
 		})
 	}
 
 	function playButton(ev){
-		let allKeys = document.querySelectorAll('.keys > button')
+		let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
+		let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
+		let allKeys = [...whiteKeys,...blackKeys]
 
 		for (let i = 0;i < allKeys.length;i++){
 			if (allKeys[i].attributes.dataondownkey.value === ev.key){
-				playButtonHoba(allKeys[i].attributes.indexnotes.value)
 				const elem = allKeys[i];
+				elem.classList.remove('click');
+				for (let i = 0;i < playesNotes.length;i++){
+					if (playesNotes[i].whatkey === ev.key){
+						playesNotes[i].audi.close()
+						playesNotes = playesNotes.filter(n => n !== playesNotes[i])
+					}
+				}
+				playButtonHoba(allKeys[i].attributes.indexnotes.value)
 				elem.classList.add('click');
 				break;
 			}
@@ -252,16 +312,30 @@ return (
     <div className="App">
 			<div className='sentezator'>
 				<div className='keys'>
-				{notes.map((note,index) =>
-					<button
-						onClick={ev => {play(ev, index)}}
-						key={index}
-						className='white'
-						dataondownkey={note[2]}
-						indexnotes={index}
-					><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
-				)}
+					<div className='white-keys'>
+						{whiteKeysNote.map((note,index) =>
+							<button
+								onClick={ev => {play(ev, index)}}
+								key={index}
+								className='white'
+								dataondownkey={note[2]}
+								indexnotes={index}
+							><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
+						)}
+					</div>
+					<div className='black-keys'>
+						{blackKeysNote.map((note,index) =>
+							<button
+								onClick={ev => {play(ev, index)}}
+								key={index}
+								className={'black '+note[3]}
+								dataondownkey={note[2]}
+								indexnotes={index}
+							><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
+						)}
+					</div>
 				</div>
+
 				<div className='set-steps'>
 					<input type='range' value={stepsInWave} onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
 					<span>Steps in wave: {stepsInWave}</span>
