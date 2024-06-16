@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
 	let playesNotes = []
+	const [stepsInWave, setStepsInWave] = useState(5758)
 
 	let notes = [
 		['A0',27.5, '1'],
@@ -53,25 +54,55 @@ function App() {
 		['D7',2349.3, 'F2'],
 		['E7',2637, 'F4'],
 		['F7',2793.8, 'F8'],
-		['G7',3136, 'und'],
-		['A7',3520, 'und'],
-		['B7',3951.1, 'und'],
-		['C8',4186, 'und']
+		['G7',3136, 'nt'],
+		['A7',3520, 'nt'],
+		['B7',3951.1, 'nt'],
+		['C8',4186, 'nt']
 	]
 
 	function play(ev, index){
 		let audioContext = new AudioContext();
+		let output = audioContext.createGain()
+	
+		let volume = audioContext.createGain();
+		let pan = audioContext.createStereoPanner();
+	
+		volume.gain.value = 1;
+		pan.pan.value = 0;
+	
+		output.connect(volume);
+		volume.connect(pan);
+		pan.connect(audioContext.destination);
+
 		var oscillator = audioContext.createOscillator();
 
 		setTimeout(() => {
 			oscillator.stop()
-			audioContext.close()
 		},250)
 
 		oscillator.type = "sine";
 		oscillator.frequency.value = notes[index][1];
 		oscillator.connect(audioContext.destination);
-		oscillator.start();
+
+		oscillator.type = "square";
+		// oscillator.frequency.value = notes[index][1];f
+
+		let steps = +(document.querySelector('.sentezator > .set-steps > input').value);
+		console.log(steps)
+		console.log(+(document.querySelector('.sentezator > .set-steps > input').value))
+
+		let imag = new global.Float32Array(steps);
+		let real = new global.Float32Array(steps);
+		
+		for (var i = 1; i < steps; i++) {
+			imag[i] = 1 / (i * Math.PI);
+		}
+		
+		const wave = audioContext.createPeriodicWave(real, imag);
+
+		oscillator.setPeriodicWave(wave);
+
+		oscillator.start(0);
 
 		const elem = ev.target;
 			elem.classList.add('click'); // Добавляем блоку класс .click
@@ -80,25 +111,14 @@ function App() {
 		}, 1300);
 	}
 
-  // function playButton(ev){
-  //   let allKeys = document.querySelectorAll('.white')
-  //   for (let i = 0;i < allKeys.length;i++){
-  //     if (allKeys[i].attributes.dataOnDownKey){
-  //       if (allKeys[i].attributes.dataOnDownKey.value === ev.key){
-  //         allKeys[i].click()
-  //       }
-  //     }
-  //   }
-  // }
-
 	function playButtonHoba(index){
 		for (let i = 0;i < playesNotes.length;i++){
 			try{
 				if (playesNotes[i].index === index){
-					return 0;
+					playesNotes[i].osci.stop()
+					playesNotes[i].audi.close()
+					playesNotes = playesNotes.filter(n => n !== playesNotes[i])
 				}
-				console.log(playesNotes[i].index)
-				console.log(index)
 			}
 			catch{
 				break;
@@ -106,12 +126,92 @@ function App() {
 		}
 
 		let audioContext = new AudioContext();
+		let output = audioContext.createGain()
+	
+		let volume = audioContext.createGain();
+		let pan = audioContext.createStereoPanner();
+	
+		volume.gain.value = 0;
+		pan.pan.value = 0;
+	
+		output.connect(volume);
+		volume.connect(pan);
+		pan.connect(audioContext.destination);
+
 		let oscillator = audioContext.createOscillator();
 
 		oscillator.type = "square";
-		oscillator.frequency.value = notes[index][1];
-		oscillator.connect(audioContext.destination);
+		// oscillator.frequency.value = notes[index][1];f
+
+		let steps = +(document.querySelector('.sentezator > .set-steps > input').value);
+
+		let imag = new global.Float32Array(steps);
+		let real = new global.Float32Array(steps);
+		
+		for (var i = 1; i < steps; i++) {
+			imag[i] = 1 / (i * Math.PI);
+		}
+		
+		const wave = audioContext.createPeriodicWave(real, imag);
+
+		oscillator.setPeriodicWave(wave);
+
+		oscillator.frequency.setValueAtTime(notes[index][1], audioContext.currentTime);
+		oscillator.connect(output);
 		oscillator.start();
+
+		function release(){
+			const interg = setInterval(() => {
+				volume.gain.value -= 0.01
+				if (volume.gain.value < 0){
+					for (let i = 0;i < playesNotes.length;i++){
+						try{
+							if (playesNotes[i].whatkey === notes[index][2]){
+								playesNotes[i].osci.stop()
+								playesNotes[i].audi.close()
+								playesNotes = playesNotes.filter(n => n !== playesNotes[i])
+							}
+						}
+						catch{
+							break
+						}
+					}
+					const elems = document.querySelectorAll('.keys > button')
+					for (let i = 0;i < elems.length;i++){
+						if (elems[i].attributes.dataondownkey.value === notes[index][2]){
+							elems[i].classList.remove('click');
+						}
+					}
+					clearInterval(interg)
+				}
+			},10)
+		}
+
+		function sustein(){
+			setTimeout(() => {
+				release()
+			}, 300)
+		}
+
+		function decay(){
+			const interg = setInterval(() => {
+				volume.gain.value -= 0.01
+				if (volume.gain.value < 0.74){
+					sustein()
+					clearInterval(interg)
+				}
+			},10)
+		}
+
+		const interd = setInterval(() => {
+			volume.gain.value += 0.14
+			if (volume.gain.value > 1){
+				clearInterval(interd)
+				setTimeout(() => {
+					decay()
+				}, 80)
+			}
+		},2)
 
 		playesNotes.push({
 			"osci":oscillator,
@@ -135,21 +235,9 @@ function App() {
 	}
 
 	function stopButton(ev){
-		for (let i = 0;i < playesNotes.length;i++){
-			try{
-				if (playesNotes[i].whatkey === ev.key){
-					playesNotes[i].osci.stop()
-					playesNotes[i].audi.close()
-					playesNotes = playesNotes.filter(n => n !== playesNotes[i])
-				}
-			}
-			catch{
-				break
-			}
-		}
 		const elems = document.querySelectorAll('.keys > button')
 		for (let i = 0;i < elems.length;i++){
-			if (elems[i].attributes.dataondownkey.value == ev.key){
+			if (elems[i].attributes.dataondownkey.value === ev.key){
 				elems[i].classList.remove('click');
 			}
 		}
@@ -157,22 +245,28 @@ function App() {
 
 	useEffect(() => {
 		document.querySelector('html').addEventListener('keydown', playButton)
-		document.querySelector('html').addEventListener('keyup', stopButton)
+		// document.querySelector('html').addEventListener('keyup', stopButton)
 	}, [])
 
 return (
     <div className="App">
-    	<div className='keys'>
-        {notes.map((note,index) =>
-        	<button
-				onClick={ev => {play(ev, index)}}
-				key={index}
-				className='white'
-				dataondownkey={note[2]}
-				indexnotes={index}
-            >{note[0]}</button>
-        )}
-    </div>
+			<div className='sentezator'>
+				<div className='keys'>
+				{notes.map((note,index) =>
+					<button
+						onClick={ev => {play(ev, index)}}
+						key={index}
+						className='white'
+						dataondownkey={note[2]}
+						indexnotes={index}
+					><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
+				)}
+				</div>
+				<div className='set-steps'>
+					<input type='range' value={stepsInWave} onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
+					<span>Steps in wave: {stepsInWave}</span>
+				</div>
+			</div>
     </div>
 	);
 }

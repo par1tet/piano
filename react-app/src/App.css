@@ -30,3 +30,24 @@
     transition: background-color 0.1s linear;
     background-color: red;
 }
+
+.sentezator > .set-steps{
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%,-50%);
+
+    width: 1300px;
+}
+
+.sentezator > .set-steps > input{
+    width: 1000px;
+}
+
+.key {
+    position: fixed;
+    top: 1%;
+    text-align: center;
+}
