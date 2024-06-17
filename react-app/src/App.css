@@ -1,3 +1,9 @@
+body {
+    background-color: rgb(118, 118, 118);
+    --height-black-button: 90px;
+    --height-white-button: 200px;
+}
+
 .keys {
     position: absolute;
     display: flex;
@@ -13,7 +19,7 @@
 
     grid-template-columns: repeat(49, 25px);
     border: 1px solid black;
-    height: 12.5rem;
+    height: var(--height-white-button);
 }
 
 .white-keys > .white {
@@ -52,7 +58,7 @@
     background-color: black;
     color: rgb(255, 255, 255);
     width: 19px;
-    height: 90px;
+    height: var(--height-black-button);
     padding: 0rem;
     margin: 0px 3.445px;
 
@@ -78,23 +84,64 @@
     background-color: rgb(2, 157, 2);
 }
 
-.sentezator > .set-steps{
+.sentezator > .settings{
     position: absolute;
 
+    background-color: rgb(172, 201, 179);
+    border-radius: 8px;
+
     top: 50%;
-    left: 50%;
+    left: 48%;
 
     transform: translate(-50%,-50%);
 
-    width: 81.25rem;
+    height: 300px;
+
+    width: 1225px;
 }
 
 .sentezator > .set-steps > input{
     width: 6.25rem;
 }
 
-.key {
-    position: fixed;
-    top: 1%;
+.black >  div > .key {
+    display: flex;
+    margin-top: calc(var(--height-black-button) - 33px);
+    border: 0px;
+
+    background-color: rgb(138, 138, 138);
+    width: 15px;
+
     text-align: center;
+}
+
+.white > div > .key {
+    display: flex;
+    margin-top: calc(var(--height-white-button) - 33px);
+    border: 0px;
+
+    background-color: rgb(174, 174, 174);
+    width: 22px;
+
+
+    text-align: center;
+}
+
+
+.black >  div > .key[value=""] {
+    display: none;
+}
+
+.black >  div > .note {
+    display: flex;
+    position: relative;
+    top: calc(var(--height-black-button) / 2 - 8px);
+    padding-left: 1px;
+}
+
+.white > div > .note {
+    display: flex;
+    position: relative;
+    top: calc(var(--height-white-button) / 2 + 8px);
+    padding-left: 4px;
 }

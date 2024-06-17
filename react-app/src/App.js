@@ -59,53 +59,53 @@ function App() {
 
 	let blackKeysNote = [
 		['A0',27.5, '1', ''],
-		['B0',30.868, '2', 'hide'],
+		['B0',30.868, '', 'hide'],
 		['C1',32.703, '3', ''],
 		['D1',36.708, '4', ''],
-		['E1',41.203, '5', 'hide'],
+		['E1',41.203, '', 'hide'],
 		['F1',43.654, '6', ''],
 		['G1',48.999, '7', ''],
 		['A0',27.5, '1', ''],
-		['B0',30.868, '2', 'hide'],
+		['B0',30.868, '', 'hide'],
 		['C1',32.703, '3', ''],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
-		['G1',48.999, '7', 'hide'],
+		['G1',48.999, '', 'hide'],
 		['A0',27.5, '1', ''],
 		['B0',30.868, '2', ''],
-		['C1',32.703, '3', 'hide'],
+		['C1',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
-		['G1',48.999, '7', 'hide'],
+		['G1',48.999, '', 'hide'],
 		['A0',27.5, '1', ''],
 		['B0',30.868, '2', ''],
-		['C1',32.703, '3', 'hide'],
+		['C1',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
-		['G1',48.999, '7', 'hide'],
+		['G1',48.999, '', 'hide'],
 		['A0',27.5, '1', ''],
 		['B0',30.868, '2', ''],
-		['C1',32.703, '3', 'hide'],
+		['C1',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
-		['G1',48.999, '7', 'hide'],
+		['G1',48.999, '', 'hide'],
 		['A0',27.5, '1', ''],
 		['A0',27.5, '1', ''],
-		['C1',32.703, '3', 'hide'],
+		['C1',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
-		['G1',48.999, '7', 'hide'],
+		['G1',48.999, '', 'hide'],
 		['A0',27.5, '1', ''],
 		['A0',27.5, '1', ''],
-		['C1',32.703, '3', 'hide'],
+		['C1',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
-		['G1',48.999, '7', 'hide'],
+		['',48.999, '', 'hide'],
 	]
 
 	function play(ev, index){
@@ -194,7 +194,7 @@ function App() {
 
 		// oscillator.frequency.value = notes[index][1];f
 
-		let steps = +(document.querySelector('.sentezator > .set-steps > input').value);
+		let steps = +(document.querySelector('.sentezator > .settings > .set-steps > input').value);
 
 		let imag = new global.Float32Array(steps);
 		let real = new global.Float32Array(steps);
@@ -215,17 +215,6 @@ function App() {
 			const interg = setInterval(() => {
 				volume.gain.value -= 0.008
 				if (volume.gain.value < 0){
-					for (let i = 0;i < playesNotes.length;i++){
-						try{
-							if (playesNotes[i].whatkey === keys[index][2]){
-								playesNotes[i].audi.close()
-								playesNotes = playesNotes.filter(n => n !== playesNotes[i])
-							}
-						}
-						catch{
-							break
-						}
-					}
 					let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
 					let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
 					let elems = [...whiteKeys,...blackKeys]
@@ -242,33 +231,34 @@ function App() {
 		function sustein(){
 			setTimeout(() => {
 				release()
-			}, 200)
+			}, 800)
 		}
 
 		function decay(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.1
-				if (volume.gain.value < 0.74){
+				volume.gain.value -= 0.05
+				if (volume.gain.value < 0.80){
 					sustein()
 					clearInterval(interg)
 				}
-			},3)
+			},4)
 		}
 
 		const interd = setInterval(() => {
-			volume.gain.value += 0.25
+			volume.gain.value += 0.6
 			if (volume.gain.value > 1){
 				clearInterval(interd)
 				setTimeout(() => {
 					decay()
 				}, 80)
 			}
-		},2)
+		},1)
 
 		playesNotes.push({
 			"audi":audioContext,
 			"index":index,
-			"whatkey":keys[index][2]
+			"whatkey":keys[index][2],
+			"isUp": false
 		})
 	}
 
@@ -279,14 +269,16 @@ function App() {
 
 		for (let i = 0;i < allKeys.length;i++){
 			if (allKeys[i].attributes.dataondownkey.value === ev.key){
-				const elem = allKeys[i];
-				elem.classList.remove('click');
 				for (let i = 0;i < playesNotes.length;i++){
 					if (playesNotes[i].whatkey === ev.key){
+						if (playesNotes[i].isUp === false){
+							return 0;
+						}
 						playesNotes[i].audi.close()
 						playesNotes = playesNotes.filter(n => n !== playesNotes[i])
 					}
 				}
+				const elem = allKeys[i];
 				playButtonHoba(allKeys[i].attributes.indexnotes.value)
 				elem.classList.add('click');
 				break;
@@ -295,17 +287,27 @@ function App() {
 	}
 
 	function stopButton(ev){
-		const elems = document.querySelectorAll('.keys > button')
+		let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
+		let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
+		let elems = [...whiteKeys,...blackKeys]
+
 		for (let i = 0;i < elems.length;i++){
 			if (elems[i].attributes.dataondownkey.value === ev.key){
 				elems[i].classList.remove('click');
+				for (let i = 0;i < playesNotes.length;i++){
+					if (playesNotes[i].whatkey === ev.key){
+						playesNotes[i].isUp = true
+						playesNotes[i].audi.close()
+						playesNotes = playesNotes.filter(n => n !== playesNotes[i])
+					}
+				}
 			}
 		}
 	}
 
 	useEffect(() => {
 		document.querySelector('html').addEventListener('keydown', playButton)
-		// document.querySelector('html').addEventListener('keyup', stopButton)
+		document.querySelector('html').addEventListener('keyup', stopButton)
 	}, [])
 
 return (
@@ -320,7 +322,7 @@ return (
 								className='white'
 								dataondownkey={note[2]}
 								indexnotes={index}
-							><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
+							><div><span className='note'>{note[0]}</span><input type='text' className='key' value={note[2]} onClick={(e) => {e.stopPropagation()}} onChange={e => {note[2] = e.value}}></input></div></button>
 						)}
 					</div>
 					<div className='black-keys'>
@@ -331,14 +333,15 @@ return (
 								className={'black '+note[3]}
 								dataondownkey={note[2]}
 								indexnotes={index}
-							><div><span className='key'>{note[2]}</span><span className='note'>{note[0]}</span></div></button>
+							><div><span className='note'>{note[0]}</span><input type='text' className='key' value={note[2]} onClick={(e) => {e.stopPropagation()}}></input></div></button>
 						)}
 					</div>
 				</div>
-
-				<div className='set-steps'>
-					<input type='range' value={stepsInWave} onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
-					<span>Steps in wave: {stepsInWave}</span>
+				<div className='settings'>
+					<div className='set-steps'>
+						<input type='range' value={stepsInWave} onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
+						<span>Steps in wave: {stepsInWave}</span>
+					</div>
 				</div>
 			</div>
     </div>
