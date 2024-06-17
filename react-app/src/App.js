@@ -4,8 +4,7 @@ import './App.css'
 function App() {
 	let playesNotes = []
 	const [stepsInWave, setStepsInWave] = useState(5758)
-
-	let whiteKeysNote = [
+	const [whiteKeysNote, setWhiteKeysNote] = useState([
 		['A0',27.5, '1'],
 		['B0',30.868, '2'],
 		['C1',32.703, '3'],
@@ -55,7 +54,7 @@ function App() {
 		['E7',2637, 'F4'],
 		['F7',2793.8, 'F8'],
 		['G7',3136, 'nt'],
-	]
+	])
 
 	let blackKeysNote = [
 		['A0',27.5, '1', ''],
@@ -213,8 +212,8 @@ function App() {
 
 		function release(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.008
-				if (volume.gain.value < 0){
+				volume.gain.value -= 0.0008
+				if (volume.gain.value <= 0){
 					let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
 					let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
 					let elems = [...whiteKeys,...blackKeys]
@@ -225,34 +224,32 @@ function App() {
 					}
 					clearInterval(interg)
 				}
-			},10)
+			},6)
 		}
 
 		function sustein(){
 			setTimeout(() => {
 				release()
-			}, 800)
+			}, 200)
 		}
 
 		function decay(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.05
-				if (volume.gain.value < 0.80){
+				volume.gain.value -= 0.12
+				if (volume.gain.value <= 0.6){
 					sustein()
 					clearInterval(interg)
 				}
-			},4)
+			},2)
 		}
 
 		const interd = setInterval(() => {
-			volume.gain.value += 0.6
-			if (volume.gain.value > 1){
+			volume.gain.value += 0.5
+			if (volume.gain.value >= 1){
 				clearInterval(interd)
-				setTimeout(() => {
-					decay()
-				}, 80)
+				decay()
 			}
-		},1)
+		},10)
 
 		playesNotes.push({
 			"audi":audioContext,
@@ -305,6 +302,16 @@ function App() {
 		}
 	}
 
+	function changeKey(e,index){
+		setWhiteKeysNote(whiteKeysNote.filter((n,inde) => {
+			if(inde === index)
+			{
+				n[2] = e.target.value
+			}
+			return n
+		}))
+	}
+
 	useEffect(() => {
 		document.querySelector('html').addEventListener('keydown', playButton)
 		document.querySelector('html').addEventListener('keyup', stopButton)
@@ -322,7 +329,13 @@ return (
 								className='white'
 								dataondownkey={note[2]}
 								indexnotes={index}
-							><div><span className='note'>{note[0]}</span><input type='text' className='key' value={note[2]} onClick={(e) => {e.stopPropagation()}} onChange={e => {note[2] = e.value}}></input></div></button>
+							><div><span className='note'>{note[0]}</span><input
+								type='text'
+								className='key'
+								value={note[2]}
+								onClick={(e) => {e.stopPropagation()}}
+								onChange={e => {changeKey(e,index)}}
+								></input></div></button>
 						)}
 					</div>
 					<div className='black-keys'>
@@ -339,7 +352,7 @@ return (
 				</div>
 				<div className='settings'>
 					<div className='set-steps'>
-						<input type='range' value={stepsInWave} onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
+						<input type='range' onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
 						<span>Steps in wave: {stepsInWave}</span>
 					</div>
 				</div>
