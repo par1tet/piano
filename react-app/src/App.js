@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { cloneElement, useEffect, useState } from 'react';
 import './App.css'
 
 function App() {
@@ -57,56 +57,56 @@ function App() {
 		['G7',3136, 'nt'],
 	])
 
-	let blackKeysNote = [
-		['A0',27.5, '1', ''],
-		['B0',30.868, '', 'hide'],
-		['C1',32.703, '3', ''],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '', 'hide'],
-		['F1',43.654, '6', ''],
-		['G1',48.999, '7', ''],
-		['A0',27.5, '1', ''],
-		['B0',30.868, '', 'hide'],
-		['C1',32.703, '3', ''],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '5', ''],
-		['G1',48.999, '', 'hide'],
-		['A0',27.5, '1', ''],
+	let [blackKeysNote, setBlackKeysNote] = useState([
+		['A#0',29.14, 'Q', ''],
+		['',null, '', 'hide'],
+		['C#1',34.65, 'W', ''],
+		['D#1',38.89, 'E', ''],
+		['',null, '', 'hide'],
+		['F#1',46.25, 'R', ''],
+		['G#1',51.91, 'T', ''],
+		['A#1',58.27, 'Y', ''],
+		['',null, '', 'hide'],
+		['C#2',69.30, 'U', ''],
+		['D#2',36.708, 'I', ''],
+		['F#2',92.50, 'O', ''],
+		['',48.999, '', 'hide'],
+		['G#2',103.83, 'P', ''],
 		['B0',30.868, '2', ''],
-		['C1',32.703, '', 'hide'],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '5', ''],
-		['F1',43.654, '6', ''],
-		['G1',48.999, '', 'hide'],
-		['A0',27.5, '1', ''],
-		['B0',30.868, '2', ''],
-		['C1',32.703, '', 'hide'],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '5', ''],
-		['F1',43.654, '6', ''],
-		['G1',48.999, '', 'hide'],
-		['A0',27.5, '1', ''],
-		['B0',30.868, '2', ''],
-		['C1',32.703, '', 'hide'],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '5', ''],
-		['F1',43.654, '6', ''],
-		['G1',48.999, '', 'hide'],
-		['A0',27.5, '1', ''],
-		['A0',27.5, '1', ''],
-		['C1',32.703, '', 'hide'],
-		['D1',36.708, '4', ''],
-		['E1',41.203, '5', ''],
-		['F1',43.654, '6', ''],
-		['G1',48.999, '', 'hide'],
-		['A0',27.5, '1', ''],
-		['A0',27.5, '1', ''],
-		['C1',32.703, '', 'hide'],
+		['',32.703, '', 'hide'],
 		['D1',36.708, '4', ''],
 		['E1',41.203, '5', ''],
 		['F1',43.654, '6', ''],
 		['',48.999, '', 'hide'],
-	]
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', ''],
+		['',32.703, '', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['',48.999, '', 'hide'],
+		['A0',27.5, '1', ''],
+		['B0',30.868, '2', ''],
+		['',32.703, '', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['',48.999, '', 'hide'],
+		['A0',27.5, '1', ''],
+		['A0',27.5, '1', ''],
+		['',32.703, '', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['',48.999, '', 'hide'],
+		['A0',27.5, '1', ''],
+		['A0',27.5, '1', ''],
+		['',32.703, '', 'hide'],
+		['D1',36.708, '4', ''],
+		['E1',41.203, '5', ''],
+		['F1',43.654, '6', ''],
+		['',48.999, '', 'hide'],
+	])
 
 	function play(ev, index){
 		let audioContext = new AudioContext();
@@ -186,7 +186,7 @@ function App() {
 		let volume = audioContext.createGain();
 		let pan = audioContext.createStereoPanner();
 	
-		volume.gain.value = 0;
+		volume.gain.value = 1;
 		pan.pan.value = 0;
 	
 		output.connect(volume);
@@ -215,7 +215,7 @@ function App() {
 
 		function release(){
 			const interg = setInterval(() => {
-				volume.gain.value -= (0.0008 * (volumeOfAllNotesT / 100))
+				volume.gain.value -= (0.008 * (volumeOfAllNotesT / 100))
 				if (volume.gain.value <= 0){
 					let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
 					let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
@@ -233,13 +233,13 @@ function App() {
 		function sustein(){
 			setTimeout(() => {
 				release()
-			}, 200)
+			}, 1200)
 		}
 
 		function decay(){
 			const interg = setInterval(() => {
-				volume.gain.value -= (0.12 * (volumeOfAllNotesT / 100))
-				if (volume.gain.value <= (0.6 * (volumeOfAllNotesT / 100))){
+				volume.gain.value -= (0.08 * (volumeOfAllNotesT / 100))
+				if (volume.gain.value <= (0.4 * (volumeOfAllNotesT / 100))){
 					sustein()
 					clearInterval(interg)
 				}
@@ -247,12 +247,12 @@ function App() {
 		}
 
 		const interd = setInterval(() => {
-			volume.gain.value += (0.5 * (volumeOfAllNotesT / 100))
+			volume.gain.value += (0 * (volumeOfAllNotesT / 100))
 			if (volume.gain.value >= (1 * (volumeOfAllNotesT / 100))){
 				clearInterval(interd)
 				decay()
 			}
-		},10)
+		},0)
 
 		playesNotes.push({
 			"audi":audioContext,
@@ -305,8 +305,18 @@ function App() {
 		}
 	}
 
-	function changeKey(e,index){
+	function changeKeyWhite(e,index){
 		setWhiteKeysNote(whiteKeysNote.filter((n,inde) => {
+			if(inde === index)
+			{
+				n[2] = e.target.value
+			}
+			return n
+		}))
+	}
+
+	function changeKeyBlack(e,index){
+		setBlackKeysNote(blackKeysNote.filter((n,inde) => {
 			if(inde === index)
 			{
 				n[2] = e.target.value
@@ -337,7 +347,7 @@ return (
 								className='key'
 								value={note[2]}
 								onClick={(e) => {e.stopPropagation()}}
-								onChange={e => {changeKey(e,index)}}
+								onChange={e => {changeKeyWhite(e,index)}}
 								></input></div></button>
 						)}
 					</div>
@@ -348,8 +358,14 @@ return (
 								key={index}
 								className={'black '+note[3]}
 								dataondownkey={note[2]}
-								indexnotes={index}
-							><div><span className='note'>{note[0]}</span><input type='text' className='key' value={note[2]} onClick={(e) => {e.stopPropagation()}}></input></div></button>
+								indexnotes={index + 49}
+							><div><span className='note'>{note[0]}</span><input
+								type='text'
+								className='key'
+								value={note[2]}
+								onClick={(e) => {e.stopPropagation()}}
+								onChange={(e) => {changeKeyBlack(e,index)}}
+							></input></div></button>
 						)}
 					</div>
 				</div>

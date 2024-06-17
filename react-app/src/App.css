@@ -50,19 +50,18 @@ body {
 
     padding-left: 12px;
 
-    height: 5rem;
+    height: var(--height-black-button);
 }
 
 .black-keys > .black {
-    border: 0px solid rgb(255, 255, 255);
+    border: 0px solid rgb(0, 0, 0);
     background-color: black;
     color: rgb(255, 255, 255);
     width: 19px;
     height: var(--height-black-button);
     padding: 0rem;
     margin: 0px 3.445px;
-
-    font-weight: bold;
+    font-size: 10px;
 
     cursor: pointer;
 }
@@ -136,6 +135,7 @@ body {
     display: flex;
     position: relative;
     top: calc(var(--height-black-button) / 2 - 8px);
+
     padding-left: 1px;
 }
 
