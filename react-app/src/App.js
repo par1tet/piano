@@ -4,6 +4,7 @@ import './App.css'
 function App() {
 	let playesNotes = []
 	const [stepsInWave, setStepsInWave] = useState(5758)
+	const [volumeOfAllNotes, setVolume] = useState(100)
 	const [whiteKeysNote, setWhiteKeysNote] = useState([
 		['A0',27.5, '1'],
 		['B0',30.868, '2'],
@@ -175,6 +176,8 @@ function App() {
 			}
 		}
 
+		let volumeOfAllNotesT = +(document.querySelector('.sentezator > .settings > .set-volume > input').value);
+
 		let keys = [...whiteKeysNote, ...blackKeysNote]
 
 		let audioContext = new AudioContext();
@@ -212,7 +215,7 @@ function App() {
 
 		function release(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.0008
+				volume.gain.value -= (0.0008 * (volumeOfAllNotesT / 100))
 				if (volume.gain.value <= 0){
 					let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
 					let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
@@ -235,8 +238,8 @@ function App() {
 
 		function decay(){
 			const interg = setInterval(() => {
-				volume.gain.value -= 0.12
-				if (volume.gain.value <= 0.6){
+				volume.gain.value -= (0.12 * (volumeOfAllNotesT / 100))
+				if (volume.gain.value <= (0.6 * (volumeOfAllNotesT / 100))){
 					sustein()
 					clearInterval(interg)
 				}
@@ -244,8 +247,8 @@ function App() {
 		}
 
 		const interd = setInterval(() => {
-			volume.gain.value += 0.5
-			if (volume.gain.value >= 1){
+			volume.gain.value += (0.5 * (volumeOfAllNotesT / 100))
+			if (volume.gain.value >= (1 * (volumeOfAllNotesT / 100))){
 				clearInterval(interd)
 				decay()
 			}
@@ -352,8 +355,10 @@ return (
 				</div>
 				<div className='settings'>
 					<div className='set-steps'>
-						<input type='range' onChange={e => setStepsInWave(e.target.value)} min="2" max="10000"></input>
-						<span>Steps in wave: {stepsInWave}</span>
+						<input type='range' onChange={e => setStepsInWave(e.target.value)} min="2" max="10000" value={stepsInWave}></input><span>Steps in wave: {stepsInWave}</span><br></br>
+					</div>
+					<div className='set-volume'>
+						<input type='range' onChange={e => setVolume(e.target.value)} min="1" max="100" value={volumeOfAllNotes}></input><span>Volume: {volumeOfAllNotes}</span>
 					</div>
 				</div>
 			</div>
