@@ -188,8 +188,13 @@ body {
     width: 600px;
     border-radius: 6px;
 
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+
     padding: 4px;
 }
+
+
 
 .oscils > .set-osc{
     background-color: rgb(163, 241, 47);
@@ -197,6 +202,21 @@ body {
     border-color: rgb(109, 174, 12);
     border: 2px rgb(109, 174, 12) solid;
     height: 93px;
+    padding-left: 2px;
+}
+
+.oscils > .set-osc > input[type='number']{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    border: 2px rgb(109, 174, 12) solid;
+    border-radius: 6px;
+}
+
+.oscils > .set-osc > select{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    border: 2px rgb(109, 174, 12) solid;
+    border-radius: 6px;
 }
 
 .oscils > .set-osc > h4{

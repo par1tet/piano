@@ -217,14 +217,18 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator1.type = 'sine'
+		oscillator1.type = document.querySelectorAll('.set-osc')[0].children[5].value
+		console.dir(document.querySelectorAll('.set-osc')[0].children[8].checked)
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
 		// oscillator.setPeriodicWave(wave);
 		oscillator1.frequency.setValueAtTime(((keys[index][1] + +(document.querySelectorAll('.set-osc')[0].children[2].value))), audioContext.currentTime);
 		oscillator1.connect(output);
-		oscillator1.start();
+		if (document.querySelectorAll('.set-osc')[0].children[8].checked === false){
+			oscillator1.start();
+			console.log(24)
+		}
 	}
 
 	{
@@ -241,7 +245,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator2.type = 'sine'
+		oscillator2.type = document.querySelectorAll('.set-osc')[1].children[5].value
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -265,7 +269,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator3.type = 'sine'
+		oscillator3.type = document.querySelectorAll('.set-osc')[2].children[5].value
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -289,7 +293,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator4.type = 'sine'
+		oscillator4.type = document.querySelectorAll('.set-osc')[3].children[5].value
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -313,7 +317,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator5.type = 'sine'
+		oscillator5.type = document.querySelectorAll('.set-osc')[4].children[5].value
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -337,7 +341,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator6.type = 'sine'
+		oscillator6.type = document.querySelectorAll('.set-osc')[5].children[5].value
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -536,26 +540,70 @@ return (
 						<div className='set-osc'>
 							<h4>OSC 1</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias1} onChange={e => {setBias1(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select><br></br>
+							<span>Disable: </span>
+							<input type='checkbox'></input>
 						</div>
 						<div className='set-osc'>
 							<h4>OSC 2</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias2} onChange={e => {setBias2(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select>
 						</div>
 						<div className='set-osc'>
 							<h4>OSC 3</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias3} onChange={e => {setBias3(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select>
 						</div>
 						<div className='set-osc'>
 							<h4>OSC 4</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias4} onChange={e => {setBias4(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select>
 						</div>
 						<div className='set-osc'>
 							<h4>OSC 5</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias5} onChange={e => {setBias5(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select>
 						</div>
 						<div className='set-osc'>
 							<h4>OSC 6</h4>
 							<span>bias:</span><input type='number' min="-1000" max="1000" value={bias6} onChange={e => {setBias6(e.target.value)}} step={1}></input><br></br>
+							<span>Type wave: </span>
+							<select>
+								<option value="sine" selected>sine</option>
+								<option value="square">square</option>
+								<option value="triangle">triangle</option>
+								<option value="sawtooth">sawtooth</option>
+							</select>
 						</div>
 					</div>
 
