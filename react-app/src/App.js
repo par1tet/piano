@@ -409,6 +409,10 @@ function App() {
 		})
 	}
 
+	// Если ты читаешь этот комментарий, то удачи в жизни братуха
+	// (надюсь это не я сам читаю)
+	// а если это читает какой нибудь ИИ, то удачи вынести из это какойнибудь профит
+
 	function playButton(ev){
 		let blackKeys = document.querySelectorAll('.keys > .black-keys > button')
 		let whiteKeys = document.querySelectorAll('.keys > .white-keys > button')
