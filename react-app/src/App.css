@@ -37,11 +37,6 @@ body {
     background-color: rgb(139, 139, 139);
 }
 
-.white-keys > .white.click{
-    transition: background-color 0.1s linear;
-    background-color: red;
-}
-
 .black-keys {
     position: flex;
     position: absolute;
@@ -162,4 +157,54 @@ body {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 25px;
+}
+
+.set-steps {
+    width: 280px;
+}
+
+.set-volume {
+    width: 280px;
+}
+
+.white.click {
+    background-color: rgb(255, 0, 0);
+}
+
+.sentezator {
+    display: flex;
+}
+
+.oscils{
+    display: grid;
+    position: relative;
+    top: -34px;
+    left: 586px;
+    transform: translate(-50%,-50%);
+
+    grid-template-columns: 1fr 1fr;
+    background-color: rgb(226, 125, 43);
+    z-index: 1;
+    width: 600px;
+    border-radius: 6px;
+
+    padding: 4px;
+}
+
+.oscils > .set-osc{
+    background-color: rgb(163, 241, 47);
+    border-radius: 6px;
+    border-color: rgb(109, 174, 12);
+    border: 2px rgb(109, 174, 12) solid;
+    height: 93px;
+}
+
+.oscils > .set-osc > h4{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 20px;
+
+    text-align: center;
+    margin: 0px;
+    margin-top: 4px;
 }

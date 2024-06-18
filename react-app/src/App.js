@@ -217,7 +217,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator1.type = 'sawtooth'
+		oscillator1.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -241,7 +241,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator2.type = 'sawtooth'
+		oscillator2.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -265,7 +265,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator3.type = 'sawtooth'
+		oscillator3.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -289,7 +289,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator4.type = 'sawtooth'
+		oscillator4.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -313,7 +313,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator5.type = 'sawtooth'
+		oscillator5.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
@@ -337,7 +337,7 @@ function App() {
 		// 	imag[i] = 1 / (i * Math.PI);
 		// }
 
-		oscillator6.type = 'sawtooth'
+		oscillator6.type = 'sine'
 
 		// const wave = audioContext.createPeriodicWave(real, imag);
 
