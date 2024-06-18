@@ -145,3 +145,21 @@ body {
     top: calc(var(--height-white-button) / 2 + 8px);
     padding-left: 4px;
 }
+
+.set-ADSR {
+    background-color: rgb(198, 82, 208);
+    padding-top: 6px;
+    border-radius: 6px;
+    width: 280px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+.set-ADSR > h4{
+    margin: 0px;
+    text-align: center;
+    color: rgb(35, 255, 222);
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 25px;
+}
